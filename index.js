@@ -1,5 +1,8 @@
 // index.js
 const { fetchData } = require('./fetchData');
+const { removeExcelFile } = require('./fileOperations');
+// Remove o arquivo Excel existente
+removeExcelFile();
 
-// Chamar a função para buscar dados e processar
+// Depois, faz a requisição e gera um novo arquivo Excel
 fetchData();

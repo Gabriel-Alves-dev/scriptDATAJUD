@@ -2,30 +2,22 @@
 const fs = require('fs');
 const path = require('path');
 
-function writeToFile(processos) {
+function removeExcelFile() {
   const outputDir = path.join(__dirname, 'content');
-  const filePath = path.join(outputDir, 'movimentos_anpp.txt');
+  const excelFilePath = path.join(outputDir, 'dados_processo.xlsx');
 
-  let content = '';
-  processos.forEach(processo => {
-    content += `Autos n. ${processo.numero_processo}, Classe: ${processo.classe}\n`;
-    content += `Ajuizamento: ${processo.data_ajuizamento}\n`;
-    content += `Assuntos: ${processo.assuntos.join(', ')}\n\n`;
-
-    processo.movimentos.forEach(movimento => {
-      content += `${movimento[2] || 'N/A'} | Cód: ${movimento[0] || 'N/A'} | Mov.: ${movimento[1] || 'N/A'} \n`;
+  // Verifica se o arquivo Excel existe e o remove
+  if (fs.existsSync(excelFilePath)) {
+    fs.unlink(excelFilePath, (err) => {
+      if (err) {
+        console.error('Erro ao excluir o arquivo Excel:', err);
+      } else {
+        console.log(`Arquivo Excel removido com sucesso: ${excelFilePath}`);
+      }
     });
-
-    content += '\n-----------------------------------------------------------------------------\n\n';
-  });
-
-  fs.writeFile(filePath, content, (err) => {
-    if (err) {
-      console.error('Erro ao salvar o arquivo de texto:', err);
-    } else {
-      console.log(`Arquivo de texto salvo com sucesso em ${filePath}`);
-    }
-  });
+  } else {
+    console.log('Nenhum arquivo Excel encontrado para remover.');
+  }
 }
 
-module.exports = { writeToFile };
+module.exports = { removeExcelFile };
